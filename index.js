@@ -38,29 +38,29 @@ async function run() {
         const carCollection = client.db('carDB').collection('car');
         const cartCollection = client.db('carDB').collection('cart');
 
-        app.get('/cars', async(req, res) =>{
+        app.get('/cars', async (req, res) => {
             const cursor = carCollection.find();
             const result = await cursor.toArray();
-            res.send(result); 
+            res.send(result);
         })
-        app.get('/cars/:id', async(req, res) =>{
+        app.get('/cars/:id', async (req, res) => {
             const id = req.params.id;
-            const query = {_id: new ObjectId(id)}
+            const query = { _id: new ObjectId(id) }
             const result = await carCollection.findOne(query);
-            res.send(result); 
+            res.send(result);
         })
 
-        app.post('/cars', async(req, res)=>{
+        app.post('/cars', async (req, res) => {
             const newCar = req.body;
             console.log(newCar);
             const result = await carCollection.insertOne(newCar);
             res.send(result);
 
-        } )
-        app.put('/cars/:id', async(req, res) => {
+        })
+        app.put('/cars/:id', async (req, res) => {
             const id = req.params.id;
-            const filter = {_id: new ObjectId(id) }
-            const options = {upsert: true };
+            const filter = { _id: new ObjectId(id) }
+            const options = { upsert: true };
             const updatedCar = req.body;
             const car = {
                 $set: {
@@ -77,22 +77,25 @@ async function run() {
             const result = await carCollection.updateOne(filter, car, options);
             res.send(result);
 
-        })
+        });
 
 
-        // app.get('/cart', async(req, res) =>{
-        //     const cursor = cartCollection.find();
-        //     const result = await cursor.toArray();
-        //     res.send(result); 
-        // })
+        app.get('/cart', async(req, res) =>{
+            const cursor = cartCollection.find();
+            const result = await cursor.toArray();
+            res.send(result); 
+        });
 
-        // app.post('/cart', async(req, res)=>{
-        //     const MyCart = req.body;
-        //     console.log(MyCart);
-        //     const result = await cartCollection.insertOne(MyCart);
-        //     res.send(result);
 
-        // } )
+        // cart related APIs
+
+        app.post('/cart', async(req, res) => {
+            const MyCart = req.body;
+            console.log(MyCart);
+            const result = await cartCollection.insertOne(MyCart);
+            res.send(result);
+
+        } );
 
 
         // Send a ping to confirm a successful connection
