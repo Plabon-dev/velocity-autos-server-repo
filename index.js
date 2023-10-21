@@ -87,7 +87,7 @@ async function run() {
         });
 
 
-        // cart related APIs
+        
 
         app.post('/cart', async(req, res) => {
             const MyCart = req.body;
@@ -96,6 +96,17 @@ async function run() {
             res.send(result);
 
         } );
+
+
+        app.delete('/cart/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = { _id: id }
+            const result = await cartCollection.deleteOne(query);
+            res.send(result);
+
+        })
+
+
 
 
         // Send a ping to confirm a successful connection
